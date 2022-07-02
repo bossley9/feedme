@@ -51,7 +51,7 @@ func (date AtomDate) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 // s4.1.1
 
 type AtomFeed struct {
-	XMLName      xml.Name          `xml:"https://www.w3.org/2005/Atom feed"`
+	XMLName      xml.Name          `xml:"http://www.w3.org/2005/Atom feed"`
 	Authors      []AtomAuthor      `xml:"author"` // >1 required
 	Categories   []AtomCategory    `xml:"category"`
 	Contributors []AtomContributor `xml:"contributor"`
@@ -79,7 +79,7 @@ type AtomEntry struct {
 	Published    AtomDate          `xml:"published,omitempty"`
 	Rights       *AtomRights       `xml:"rights,omitempty"`
 	Source       *AtomSource       `xml:"source,omitempty"`
-	Summary      AtomSummary       `xml:"summary,omitempty"`
+	Summary      *AtomSummary      `xml:"summary,omitempty"`
 	Title        AtomTitle         `xml:"title"`   // required
 	Updated      AtomDate          `xml:"updated"` // required
 }
