@@ -3,3 +3,6 @@ build:
 
 server:
 	go run cmd/main.go
+
+test:
+	go test ./pkg/atom

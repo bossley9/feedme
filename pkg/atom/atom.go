@@ -9,18 +9,18 @@ import (
 
 // s3.1
 
-type AtomText struct {
+type AtomTextConstruct struct {
 	Type AtomTextType `xml:"type,attr,omitempty"`
 	Text string       `xml:",chardata"` // required
 }
 
 // s3.1.1
 
-type AtomTextType string // one of "text", "html", "xhtml", or a MIME media type - default "text"
+type AtomTextType string // one of "text", "html", "xhtml" - default "text"
 
 // s3.2
 
-type AtomPerson struct {
+type AtomPersonConstruct struct {
 	Name  AtomName  `xml:"name"` // required
 	Uri   AtomURI   `xml:"uri,omitempty"`
 	Email AtomEmail `xml:"email,omitempty"`
@@ -70,13 +70,14 @@ type AtomFeed struct {
 // s4.1.2
 
 type AtomEntry struct {
+	XMLName      xml.Name          `xml:"entry"`
 	Authors      []AtomAuthor      `xml:"author"`
 	Categories   []AtomCategory    `xml:"category"`
-	Content      AtomContent       `xml:"content"`
+	Content      *AtomContent      `xml:"content"`
 	Contributors []AtomContributor `xml:"contributor"`
 	Id           AtomID            `xml:"id"` // required
 	Links        []AtomLink        `xml:"link"`
-	Published    AtomDate          `xml:"published,omitempty"`
+	Published    *AtomDate         `xml:"published,omitempty"`
 	Rights       *AtomRights       `xml:"rights,omitempty"`
 	Source       *AtomSource       `xml:"source,omitempty"`
 	Summary      *AtomSummary      `xml:"summary,omitempty"`
@@ -87,27 +88,28 @@ type AtomEntry struct {
 // s4.1.2
 
 type AtomContent struct {
-	Type AtomTextType `xml:"type,attr,omitempty"`
-	Src  AtomURI      `xml:"src,attr,omitempty"`
-	Text string       `xml:",chardata"`
+	Type string  `xml:"type,attr,omitempty"` // one of "text", "html", "xhtml", or a MIME media type - default "text"
+	Src  AtomURI `xml:"src,attr,omitempty"`
+	Text string  `xml:",chardata"`
 }
 
 // s4.2.1
 
-type AtomAuthor AtomPerson
+type AtomAuthor AtomPersonConstruct
 
 // s4.2.2
 
 // self-closing element
 type AtomCategory struct {
-	Term   string  `xml:"term,attr"` // required
-	Scheme AtomURI `xml:"scheme,attr,omitempty"`
-	Label  string  `xml:"label,attr,omitempty"` // HTML-escaped
+	XMLName xml.Name `xml:"category"`
+	Term    string   `xml:"term,attr"` // required
+	Scheme  AtomURI  `xml:"scheme,attr,omitempty"`
+	Label   string   `xml:"label,attr,omitempty"` // HTML-escaped
 }
 
 // s4.2.3
 
-type AtomContributor AtomPerson
+type AtomContributor AtomPersonConstruct
 
 // s4.2.4
 
@@ -125,7 +127,7 @@ func (generator AtomGenerator) MarshalXML(e *xml.Encoder, _ xml.StartElement) er
 
 	version := xml.Attr{
 		Name:  xml.Name{Local: "version"},
-		Value: "0.1",
+		Value: "0.0.1",
 	}
 
 	element := xml.StartElement{
@@ -153,6 +155,7 @@ type AtomID AtomURI
 
 // self-closing element
 type AtomLink struct {
+	XMLName  xml.Name        `xml:"link"`
 	Href     AtomURI         `xml:"href,attr"` // required
 	Rel      AtomRelType     `xml:"rel,attr,omitempty"`
 	Type     AtomMediaType   `xml:"type,attr,omitempty"`
@@ -207,7 +210,7 @@ type AtomLogo AtomURI
 
 // s4.2.10
 
-type AtomRights AtomText
+type AtomRights AtomTextConstruct
 
 // s4.2.11
 
@@ -216,12 +219,12 @@ type AtomSource struct{} // extension of atom:feed without entries
 
 // s4.2.12
 
-type AtomSubtitle AtomText
+type AtomSubtitle AtomTextConstruct
 
 // s4.2.13
 
-type AtomSummary AtomText
+type AtomSummary AtomTextConstruct
 
 // s4.2.14
 
-type AtomTitle AtomText
+type AtomTitle AtomTextConstruct
