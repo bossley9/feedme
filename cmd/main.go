@@ -59,7 +59,7 @@ func main() {
 		Categories: []atom.AtomCategory{
 			cat1,
 		},
-		Content: atom.AtomContent{
+		Content: &atom.AtomContent{
 			Text: "<h1>Cats vs Dogs</h1><p>Who will win in this thrilling battle?</p><p>It's still unclear</p>",
 		},
 		Contributors: []atom.AtomContributor{
@@ -70,7 +70,7 @@ func main() {
 		Title: atom.AtomTitle{
 			Text: "<h1>Cats vs Dogs</h1>",
 		},
-		Published: date,
+		Published: &date,
 		Rights: &atom.AtomRights{
 			Text: "Dog Incorporated. All rights reserved.",
 		},

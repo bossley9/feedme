@@ -84,9 +84,9 @@ func (feed *AtomFeed) AddAuthor(name string, uri string, email string) error {
 
 // s4.2.7
 
-func (feed *AtomFeed) AddLink(href AtomURI, rel AtomRelType) error {
+func (feed *AtomFeed) AddLink(href string, rel AtomRelType) error {
 	link := AtomLink{
-		Href: href,
+		Href: AtomURI(href),
 		Rel:  rel,
 	}
 	feed.Links = append(feed.Links, link)
@@ -94,9 +94,9 @@ func (feed *AtomFeed) AddLink(href AtomURI, rel AtomRelType) error {
 	return nil
 }
 
-func (entry *AtomEntry) AddLink(href AtomURI, rel AtomRelType) error {
+func (entry *AtomEntry) AddLink(href string, rel AtomRelType) error {
 	link := AtomLink{
-		Href: href,
+		Href: AtomURI(href),
 		Rel:  rel,
 	}
 	entry.Links = append(entry.Links, link)
