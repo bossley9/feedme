@@ -127,7 +127,7 @@ func (generator AtomGenerator) MarshalXML(e *xml.Encoder, _ xml.StartElement) er
 
 	version := xml.Attr{
 		Name:  xml.Name{Local: "version"},
-		Value: "0.0.1",
+		Value: "0.0.2",
 	}
 
 	element := xml.StartElement{
