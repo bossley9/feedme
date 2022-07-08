@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"git.sr.ht/~bossley9/feed-generator/pkg/atom"
+	"git.sr.ht/~bossley9/feedme/pkg/atom"
 )
 
 func main() {
