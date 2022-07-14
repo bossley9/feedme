@@ -5,6 +5,7 @@ An Atom feed generator adhering to RFC 4287 standards
 ## Table of Contents
 
 1. [Introduction](#introduction)
+2. [Usage](#usage)
 
 ## Introduction
 
@@ -19,9 +20,9 @@ Feedme's feed generating capabilities can be accessed via its atom package in go
 ```go
 import (
 	"fmt"
-  "time"
+	"time"
 
-  "git.sr.ht/~bossley9/feedme/pkg/atom"
+	"git.sr.ht/~bossley9/feedme/pkg/atom"
 )
 
 func main() {
