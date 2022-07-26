@@ -105,4 +105,6 @@ func main() {
 	}
 
 	fmt.Println(*feed)
+
+	fmt.Println("domain name is " + GetEnv(DOMAIN_NAME, "example.com"))
 }

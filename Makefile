@@ -1,13 +1,10 @@
-VERSION = v0.0.4
+EXE = feedme
 
-build:
-	go build cmd/main.go
-
-server:
-	go run cmd/main.go
+build: test
+	./build.sh ./$(EXE)
 
 test:
 	go test ./pkg/atom
 
-publish:
-	GOPROXY=proxy.golang.org go list -m git.sr.ht/~bossley9/feedme@$(VERSION)
+server:
+	go run cmd/*.go

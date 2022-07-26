@@ -5,6 +5,7 @@ An Atom feed generator adhering to RFC 4287 standards
 ## Table of Contents
 
 1. [Introduction](#introduction)
+1. [Requirements](#requirements)
 2. [Usage](#usage)
 
 ## Introduction
@@ -12,6 +13,24 @@ An Atom feed generator adhering to RFC 4287 standards
 The purpose of this service is to generate Atom feeds for sites, services, or protocols which do not natively generate feeds (or do not generate useful feeds).
 
 Atom is defined according to [RFC 4287](https://datatracker.ietf.org/doc/html/rfc4287). Note that not all possible definitions of an Atom feed can be generated with this repository (see [Appendix B](https://datatracker.ietf.org/doc/html/rfc4287#appendix-B)); however, each generated Atom feed can be validated according to this standard.
+
+## Requirements
+
+A working Golang 1.18+ installation is required.
+
+## Installation
+
+Create a `.env` file. If you supply no variables, defaults will be filled in for you.
+
+```
+DOMAIN_NAME=example.com
+```
+
+Then build the application.
+
+```
+make
+```
 
 ## Usage
 
@@ -39,7 +58,7 @@ func main() {
 	fmt.Println(feed.String())
 
 	// outputs:
-  //
+	//
 	// <?xml version="1.0" encoding="UTF-8"?>
 	// <feed xmlns="http://www.w3.org/2005/Atom">
 	//   <id>example.com</id>
