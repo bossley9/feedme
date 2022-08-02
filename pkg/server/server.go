@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"time"
 
+	h "git.sr.ht/~bossley9/feedme/pkg/handlers"
+
 	"github.com/gorilla/mux"
 )
 
 func New(domain string, port string, certFile string, keyFile string) error {
 	r := mux.NewRouter().StrictSlash(true).UseEncodedPath()
-	r.HandleFunc("/", handleHome)
+	r.HandleFunc("/", h.HandleUsage)
 	r.HandleFunc("/{type}", handleFeed)
 	http.Handle("/", r)
 
