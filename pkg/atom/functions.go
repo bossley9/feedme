@@ -1,7 +1,6 @@
 package atom
 
 import (
-	// "fmt"
 	"errors"
 	"time"
 )
@@ -82,6 +81,18 @@ func (feed *AtomFeed) AddAuthor(name string, uri string, email string) error {
 	return nil
 }
 
+// s4.2.2
+
+func (feed *AtomFeed) AddCategory(term string, scheme string, label string) error {
+	cat := AtomCategory{
+		Term:   term,
+		Scheme: AtomURI(scheme),
+		Label:  label,
+	}
+	feed.Categories = append(feed.Categories, cat)
+	return nil
+}
+
 // s4.2.7
 
 func (feed *AtomFeed) AddLink(href string, rel AtomRelType) error {
@@ -104,11 +115,29 @@ func (entry *AtomEntry) AddLink(href string, rel AtomRelType) error {
 	return nil
 }
 
+// s4.2.8
+
+func (feed *AtomFeed) SetLogo(uri string) error {
+	feed.Logo = AtomLogo(uri)
+	return nil
+}
+
 // s4.2.9
 
 func (entry *AtomEntry) SetPublished(published time.Time) error {
 	date := AtomDate(published)
 	entry.Published = &date
+	return nil
+}
+
+// s4.2.10
+
+func (feed *AtomFeed) SetCopyright(text string, textType string) error {
+	rights := AtomRights{
+		Text: text,
+		Type: AtomTextType(textType),
+	}
+	feed.Rights = &rights
 	return nil
 }
 
@@ -120,6 +149,18 @@ func (feed *AtomFeed) SetSubtitle(text string, textType string) error {
 		Type: AtomTextType(textType),
 	}
 	feed.Subtitle = &subtitle
+
+	return nil
+}
+
+// s4.2.13
+
+func (entry *AtomEntry) SetSummary(text string, textType string) error {
+	summary := AtomSummary{
+		Text: text,
+		Type: AtomTextType(textType),
+	}
+	entry.Summary = &summary
 
 	return nil
 }
