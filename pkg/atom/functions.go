@@ -5,6 +5,16 @@ import (
 	"time"
 )
 
+// s3.3
+
+func (feed *AtomFeed) SetUpdated(date time.Time) error {
+	if date.IsZero() {
+		return nil
+	}
+	feed.Updated = AtomDate(date)
+	return nil
+}
+
 // s4.1.1
 
 func CreateFeed(id string, title string, updated time.Time) (*AtomFeed, error) {
@@ -162,5 +172,19 @@ func (entry *AtomEntry) SetSummary(text string, textType string) error {
 	}
 	entry.Summary = &summary
 
+	return nil
+}
+
+// s4.2.14
+
+func (feed *AtomFeed) SetTitle(text string, textType string) error {
+	if len(text) == 0 {
+		return nil
+	}
+	title := AtomTitle{
+		Text: text,
+		Type: AtomTextType(textType),
+	}
+	feed.Title = title
 	return nil
 }
