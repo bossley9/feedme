@@ -12,7 +12,7 @@ import (
 
 func New(domain string, port string, certFile string, keyFile string) error {
 	r := mux.NewRouter().StrictSlash(true).UseEncodedPath()
-	r.HandleFunc("/", h.HandleUsage)
+	r.HandleFunc("/", h.HandleDefaultUsage)
 	r.HandleFunc("/{type}", handleFeed)
 	http.Handle("/", r)
 

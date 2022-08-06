@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -17,11 +16,6 @@ import (
 
 const geminiProtocol = "gemini://"
 const iSO8601 = "2006-01-02"
-
-func handleGeminiUsage(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, "usage: /gemini?url={ENCODED_URL_WITH_NO_PROTOCOL}")
-}
 
 const (
 	titleState = iota
@@ -80,7 +74,7 @@ func parseGemlogEntry(feed *atom.AtomFeed, feedUrl string, line string, wg *sync
 func HandleGemini(w http.ResponseWriter, r *http.Request) {
 	encodedUrl := r.FormValue("url")
 	if len(encodedUrl) == 0 {
-		handleGeminiUsage(w, r)
+		HandleUsage(w, r, "/gemini?url={ENCODED_URL_WITH_NO_PROTOCOL}")
 		return
 	}
 
@@ -149,6 +143,5 @@ func HandleGemini(w http.ResponseWriter, r *http.Request) {
 		feed.SetUpdated(updated)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, feed.String())
+	HandleSuccess(w, r, feed)
 }

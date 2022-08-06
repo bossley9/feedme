@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/xml"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -75,6 +74,5 @@ func HandleSolene(w http.ResponseWriter, r *http.Request) {
 		feed.AddEntry(entry)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, feed.String())
+	HandleSuccess(w, r, feed)
 }

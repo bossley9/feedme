@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/xml"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -109,15 +108,10 @@ type acastResponse struct {
 	} `xml:"channel"`
 }
 
-func handleAcastUsage(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, "usage: /acast?show={SHOW_ID}")
-}
-
 func HandleAcast(w http.ResponseWriter, r *http.Request) {
 	showID := r.FormValue("show")
 	if len(showID) == 0 {
-		handleAcastUsage(w, r)
+		HandleUsage(w, r, "/acast?show={SHOW_ID}")
 		return
 	}
 
@@ -176,6 +170,5 @@ func HandleAcast(w http.ResponseWriter, r *http.Request) {
 		feed.AddEntry(entry)
 	}
 
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, feed.String())
+	HandleSuccess(w, r, feed)
 }
