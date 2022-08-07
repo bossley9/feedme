@@ -35,12 +35,22 @@ func HandleUsage(w http.ResponseWriter, r *http.Request, usage string) {
 }
 
 func HandleDefaultUsage(w http.ResponseWriter, r *http.Request) {
-	HandleUsage(w, r, "/{type}?{param}={value}")
+	usage := `/{type}?{param}={value}
+
+available types are:
+* acast
+* gemini
+* soundcloud
+* @solene
+`
+	HandleUsage(w, r, usage)
 }
 
 // success
 
 func HandleSuccess(w http.ResponseWriter, _ *http.Request, feed *atom.AtomFeed) {
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/atom+xml")
+	w.Header().Set("Content-Disposition", "inline; filename=\"feed.xml\"")
 	fmt.Fprintln(w, feed.String())
 }
