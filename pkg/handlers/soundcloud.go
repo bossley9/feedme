@@ -119,6 +119,29 @@ type soundcloudResponse struct {
 	QueryUrn interface{} `json:"query_urn"`
 }
 
+func fetchSoundcloudClientID(htmlDoc *goquery.Document) (string, error) {
+	// reliant on the fact that the last crossorigin script contains the client id
+	clientIDUrl, exists := htmlDoc.Find("script[crossorigin]").Last().Attr("src")
+	if !exists {
+		return "", errors.New("unable to find Soundcloud client id script source in document")
+	}
+
+	clientJSRaw, err := api.FetchGet(clientIDUrl)
+	if err != nil {
+		return "", err
+	}
+
+	client_js := string(clientJSRaw)
+	client_id_key := "client_id"
+	index_client_id_key := strings.Index(client_js, client_id_key)
+	client_id_raw := client_js[index_client_id_key+len(client_id_key):]
+
+	quote := "\""
+	client_id_raw_1 := client_id_raw[strings.Index(client_id_raw, quote)+1:]
+	client_id_raw_2 := client_id_raw_1[:strings.Index(client_id_raw_1, quote)]
+	return client_id_raw_2, nil
+}
+
 func HandleSoundcloud(w http.ResponseWriter, r *http.Request) {
 	user := r.FormValue("user")
 	if len(user) == 0 {
@@ -141,50 +164,46 @@ func HandleSoundcloud(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feed, err := atom.CreateFeed(formattedUrl, user, time.Now())
+	// display name might be different that url username
+	username := user
+	displayName, exists := htmlDoc.Find("meta[property='og:title']").Attr("content")
+	if exists {
+		username = displayName
+	}
+
+	feed, err := atom.CreateFeed(formattedUrl, username, time.Now())
 	if err != nil {
 		HandleBadRequest(w, r, err)
 		return
 	}
 
 	feed.AddLink(formattedUrl, atom.RelSelf)
-	feed.AddAuthor(user, "", "")
-	feed.SetSubtitle(user+"'s Soundcloud tracks", "text")
 
-	// get user id
-	sel_user_id := htmlDoc.Find("meta[property='al:ios:url']")
-	attr_user_id, exists := sel_user_id.Attr("content")
+	feed.AddAuthor(username, "", "")
+	feed.SetSubtitle(username+"'s Soundcloud tracks", "text")
+
+	image, exists := htmlDoc.Find("meta[property='og:image']").Attr("content")
+	if exists {
+		feed.SetLogo(image)
+	}
+
+	// get userID
+	userIDUrl, exists := htmlDoc.Find("meta[property='al:ios:url']").Attr("content")
 	if !exists {
 		HandleBadRequest(w, r, errors.New("unable to find Soundcloud user id in document"))
 		return
 	}
-	index_colon := strings.LastIndex(attr_user_id, ":")
-	user_id := attr_user_id[index_colon+1:]
+	userIDSegments := strings.Split(userIDUrl, ":")
+	userID := userIDSegments[len(userIDSegments)-1]
 
-	// get client id source
-	sel_crossorigin_scripts := htmlDoc.Find("script[crossorigin]")
-	// reliant on the fact that the last crossorigin script contains the client id
-	sel_client_id_src := sel_crossorigin_scripts.Last()
-	client_id_src, exists := sel_client_id_src.Attr("src")
-	if !exists {
-		HandleBadRequest(w, r, errors.New("unable to find Soundcloud client id script source in document"))
+	clientID, err := fetchSoundcloudClientID(htmlDoc)
+	if err != nil {
+		HandleBadRequest(w, r, err)
 		return
 	}
 
-	// get client id
-	clientJSRaw, err := api.FetchGet(client_id_src)
-	client_js := string(clientJSRaw)
-	client_id_key := "client_id"
-	index_client_id_key := strings.Index(client_js, client_id_key)
-	client_id_raw := client_js[index_client_id_key+len(client_id_key):]
-
-	quote := "\""
-	client_id_raw_1 := client_id_raw[strings.Index(client_id_raw, quote)+1:]
-	client_id_raw_2 := client_id_raw_1[:strings.Index(client_id_raw_1, quote)]
-	client_id := client_id_raw_2
-
-	// fetch client data
-	data_url := "https://api-v2.soundcloud.com/users/" + user_id + "/tracks?representation=&offset=&limit=30&client_id=" + client_id
+	// fetch data
+	data_url := "https://api-v2.soundcloud.com/users/" + userID + "/tracks?representation=&offset=&limit=30&client_id=" + clientID
 	data, err := api.FetchGet(data_url)
 	if err != nil {
 		HandleBadRequest(w, r, err)
@@ -208,12 +227,12 @@ func HandleSoundcloud(w http.ResponseWriter, r *http.Request) {
 		var content strings.Builder
 		content.WriteString("<h2>" + title + " by " + html.EscapeString(track.User.Username+"</h2>"))
 		content.WriteString(`<img src="` + track.ArtworkURL + `" alt="` + title + `" />`)
-		if len(track.Genre) > 0 {
-			content.WriteString("<p>Genre: " + html.EscapeString(track.Genre) + "</p>")
-		}
 		content.WriteString("<p>" + html.EscapeString(track.Description) + "</p>")
-
 		entry.SetContent(content.String(), "html")
+
+		if len(track.Genre) > 0 {
+			entry.AddCategory(track.Genre, "", "")
+		}
 
 		feed.AddEntry(entry)
 	}

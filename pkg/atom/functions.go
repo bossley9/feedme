@@ -103,6 +103,16 @@ func (feed *AtomFeed) AddCategory(term string, scheme string, label string) erro
 	return nil
 }
 
+func (entry *AtomEntry) AddCategory(term string, scheme string, label string) error {
+	cat := AtomCategory{
+		Term:   term,
+		Scheme: AtomURI(scheme),
+		Label:  label,
+	}
+	entry.Categories = append(entry.Categories, cat)
+	return nil
+}
+
 // s4.2.7
 
 func (feed *AtomFeed) AddLink(href string, rel AtomRelType) error {
