@@ -24,12 +24,23 @@ Create a `.env` file. If you supply no variables, defaults will be filled in for
 
 ```
 DOMAIN_NAME=example.com
+DOMAIN_PORT=8080
+CERT_FILE=/mycert.fullchain.pem
+KEY_FILE=/mykey.key
 ```
 
-Then build the application.
+Then build and install the application.
 
 ```
 make
+$ make install
+```
+
+If you're running OpenBSD, running the service is simple.
+
+```
+$ rcctl enable feedme
+$ rcctl start feedme
 ```
 
 ## Usage
