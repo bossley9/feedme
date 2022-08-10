@@ -35,15 +35,7 @@ func HandleUsage(w http.ResponseWriter, r *http.Request, usage string) {
 }
 
 func HandleDefaultUsage(w http.ResponseWriter, r *http.Request) {
-	usage := `/{type}?{param}={value}
-
-available types are:
-* acast
-* gemini
-* soundcloud
-* @solene
-`
-	HandleUsage(w, r, usage)
+	HandleUsage(w, r, getDefaultUsage())
 }
 
 // success
