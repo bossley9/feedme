@@ -48,8 +48,9 @@ func HandleOdysee(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := response.Channel
+	feedTitle := strings.TrimSuffix(data.Title, " on Odysee")
 
-	feed, err := atom.CreateFeed(data.Link, data.Title, time.Now())
+	feed, err := atom.CreateFeed(data.Link, feedTitle, time.Now())
 	if err != nil {
 		HandleBadRequest(w, r, err)
 		return
