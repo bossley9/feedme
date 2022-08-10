@@ -63,7 +63,7 @@ func parseGemlogEntry(feed *atom.AtomFeed, feedUrl string, line string, wg *sync
 		return
 	}
 
-	entry.AddLink(entryUrl, atom.RelSelf)
+	entry.AddLink(entryUrl, atom.RelAlternate)
 
 	content := gem.ToHTML(string(res))
 	entry.SetContent(content, "html")

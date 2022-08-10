@@ -71,7 +71,7 @@ func HandleOdysee(w http.ResponseWriter, r *http.Request) {
 		published := getDatetime(item.PubDate, time.RFC1123)
 		entry.SetPublished(published)
 
-		entry.AddLink(entryUrl, atom.RelSelf)
+		entry.AddLink(entryUrl, atom.RelAlternate)
 
 		entry.SetContent(item.Description, "html")
 

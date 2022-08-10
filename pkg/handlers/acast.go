@@ -160,7 +160,7 @@ func HandleAcast(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		entry.AddLink(item.Enclosure.URL, atom.RelSelf)
+		entry.AddLink(item.Enclosure.URL, atom.RelAlternate)
 		entry.SetPublished(published)
 		entry.SetSummary(item.Description, "html")
 

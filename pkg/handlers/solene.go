@@ -62,7 +62,7 @@ func HandleSolene(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		entry.AddLink(item.Link, atom.RelSelf)
+		entry.AddLink(item.Link, atom.RelAlternate)
 		entry.SetPublished(published)
 
 		spaceTrimmedContent := strings.TrimSpace(item.Description)

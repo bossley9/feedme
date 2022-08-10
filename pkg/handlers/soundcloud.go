@@ -221,7 +221,7 @@ func HandleSoundcloud(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
-		entry.AddLink(track.PermalinkURL, atom.RelSelf)
+		entry.AddLink(track.PermalinkURL, atom.RelAlternate)
 		entry.SetPublished(track.CreatedAt)
 
 		var content strings.Builder
