@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"git.sr.ht/~bossley9/feedme/pkg/atom"
 
@@ -45,4 +46,14 @@ func HandleSuccess(w http.ResponseWriter, _ *http.Request, feed *atom.AtomFeed) 
 	w.Header().Set("Content-Type", "application/atom+xml")
 	w.Header().Set("Content-Disposition", "inline; filename=\"feed.xml\"")
 	fmt.Fprintln(w, feed.String())
+}
+
+// date
+
+func getDatetime(date string, format string) time.Time {
+	datetime, err := time.Parse(format, date)
+	if err != nil {
+		datetime = time.Now()
+	}
+	return datetime
 }

@@ -9,6 +9,7 @@ import (
 const (
 	acastType      = "acast"
 	geminiType     = "gemini"
+	odyseeType     = "odysee"
 	soundcloudType = "soundcloud"
 	soleneType     = "@solene"
 )
@@ -24,6 +25,7 @@ available types are:
 ` +
 		getLineType(acastType) +
 		getLineType(geminiType) +
+		getLineType(odyseeType) +
 		getLineType(soundcloudType) +
 		getLineType(soleneType)
 }
@@ -36,6 +38,8 @@ func handleFeed(w http.ResponseWriter, r *http.Request) {
 		HandleAcast(w, r)
 	case geminiType:
 		HandleGemini(w, r)
+	case odyseeType:
+		HandleOdysee(w, r)
 	case soundcloudType:
 		HandleSoundcloud(w, r)
 	case soleneType:

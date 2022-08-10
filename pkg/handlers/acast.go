@@ -153,10 +153,7 @@ func HandleAcast(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, item := range data.Item {
-		published, err := time.Parse(time.RFC1123, item.PubDate)
-		if err != nil {
-			published = time.Now()
-		}
+		published := getDatetime(item.PubDate, time.RFC1123)
 
 		entry, err := atom.CreateFeedEntry(item.EpisodeId, item.Title, published)
 		if err != nil {
