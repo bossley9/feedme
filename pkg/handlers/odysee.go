@@ -60,16 +60,18 @@ func HandleOdysee(w http.ResponseWriter, r *http.Request) {
 	feed.SetSubtitle(data.Description, "text")
 
 	for _, item := range data.Items {
-		id := item.Link
+		entryUrl := item.Link
 		title := strings.TrimSuffix(item.Title, " (video)")
 
-		entry, err := atom.CreateFeedEntry(id, title, time.Now())
+		entry, err := atom.CreateFeedEntry(entryUrl, title, time.Now())
 		if err != nil {
 			continue
 		}
 
 		published := getDatetime(item.PubDate, time.RFC1123)
 		entry.SetPublished(published)
+
+		entry.AddLink(entryUrl, atom.RelSelf)
 
 		entry.SetContent(item.Description, "html")
 
