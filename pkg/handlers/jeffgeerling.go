@@ -60,6 +60,10 @@ func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerling
 	if last.HasClass("node__links") {
 		last.Remove()
 	}
+	// remove tags
+	contentEl.Children().Last().Remove()
+	// remove further reading
+	contentEl.Children().Last().Remove()
 
 	contentHtml, err := contentEl.Html()
 	if err != nil {
