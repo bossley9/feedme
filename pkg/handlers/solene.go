@@ -42,7 +42,6 @@ func HandleSolene(w http.ResponseWriter, r *http.Request) {
 
 	data := response.Channel
 
-	// use the current time as feed update time
 	feed, err := atom.CreateFeed(url, data.Title, time.Now())
 	if err != nil {
 		HandleBadRequest(w, r, err)

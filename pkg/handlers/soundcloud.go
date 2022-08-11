@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
 	"html"
@@ -151,14 +150,7 @@ func HandleSoundcloud(w http.ResponseWriter, r *http.Request) {
 
 	formattedUrl := "https://soundcloud.com/" + user + "/tracks"
 
-	res, err := api.FetchGet(formattedUrl)
-	if err != nil {
-		HandleBadRequest(w, r, err)
-		return
-	}
-
-	reader := bytes.NewReader(res)
-	htmlDoc, err := goquery.NewDocumentFromReader(reader)
+	htmlDoc, err := api.FetchHTML(formattedUrl)
 	if err != nil {
 		HandleBadRequest(w, r, err)
 		return

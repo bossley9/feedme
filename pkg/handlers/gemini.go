@@ -99,11 +99,7 @@ func HandleGemini(w http.ResponseWriter, r *http.Request) {
 
 	feed.AddLink(formattedUrl, atom.RelSelf)
 
-	entryMatcher, err := regexp.CompilePOSIX("^=> .* ....-..-..")
-	if err != nil {
-		HandleBadRequest(w, r, err)
-		return
-	}
+	entryMatcher := regexp.MustCompilePOSIX("^=> .* ....-..-..")
 
 	var wg sync.WaitGroup
 	state := titleState

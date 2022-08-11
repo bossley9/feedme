@@ -7,11 +7,12 @@ import (
 
 // unique feeds prefixed by "@"
 const (
-	acastType      = "acast"
-	geminiType     = "gemini"
-	odyseeType     = "odysee"
-	soundcloudType = "soundcloud"
-	soleneType     = "@solene"
+	acastType        = "acast"
+	geminiType       = "gemini"
+	jeffgeerlingType = "@jeffgeerling"
+	odyseeType       = "odysee"
+	soundcloudType   = "soundcloud"
+	soleneType       = "@solene"
 )
 
 func getLineType(feedType string) string {
@@ -25,6 +26,7 @@ available types are:
 ` +
 		getLineType(acastType) +
 		getLineType(geminiType) +
+		getLineType(jeffgeerlingType) +
 		getLineType(odyseeType) +
 		getLineType(soundcloudType) +
 		getLineType(soleneType)
@@ -38,6 +40,8 @@ func handleFeed(w http.ResponseWriter, r *http.Request) {
 		HandleAcast(w, r)
 	case geminiType:
 		HandleGemini(w, r)
+	case jeffgeerlingType:
+		HandleJeffGeerling(w, r)
 	case odyseeType:
 		HandleOdysee(w, r)
 	case soundcloudType:
