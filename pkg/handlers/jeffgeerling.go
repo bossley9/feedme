@@ -10,8 +10,6 @@ import (
 
 	"git.sr.ht/~bossley9/feedme/pkg/api"
 	"git.sr.ht/~bossley9/feedme/pkg/atom"
-
-	"github.com/PuerkitoBio/goquery"
 )
 
 type jeffGeerlingResponseItem struct {
@@ -29,13 +27,6 @@ type jeffGeerlingResponse struct {
 		Link  string                     `xml:"link"`
 		Items []jeffGeerlingResponseItem `xml:"item"`
 	} `xml:"channel"`
-}
-
-func removeAllClasses(s *goquery.Selection) {
-	s.RemoveClass()
-	s.Children().Each(func(i int, childSel *goquery.Selection) {
-		removeAllClasses(childSel)
-	})
 }
 
 func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerlingResponseItem, wg *sync.WaitGroup) {
@@ -64,14 +55,11 @@ func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerling
 
 	contentEl := doc.Find("article .node__content")
 
-	// tidy as much as possible
-	contentEl.Children().Each(func(i int, s *goquery.Selection) {
-		if s.HasClass("node__links") {
-			s.Remove()
-			return
-		}
-	})
-	removeAllClasses(contentEl)
+	// remove comment section
+	last := contentEl.Children().Last()
+	if last.HasClass("node__links") {
+		last.Remove()
+	}
 
 	contentHtml, err := contentEl.Html()
 	if err != nil {
@@ -110,8 +98,9 @@ func HandleJeffGeerling(w http.ResponseWriter, r *http.Request) {
 
 	data := response.Channel
 	feedUrl := strings.TrimSuffix(data.Link, "/")
+	feedTitle := strings.TrimSuffix(data.Title, "'s Blog")
 
-	feed, err := atom.CreateFeed(feedUrl, data.Title, time.Now())
+	feed, err := atom.CreateFeed(feedUrl, feedTitle, time.Now())
 	if err != nil {
 		HandleBadRequest(w, r, err)
 		return
