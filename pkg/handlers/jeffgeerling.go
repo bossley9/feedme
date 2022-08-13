@@ -45,7 +45,6 @@ func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerling
 	entry.AddLink(entryUrl, atom.RelAlternate)
 	published := getDatetime(item.PubDate, time.RFC1123Z)
 	entry.SetPublished(published)
-	entry.SetSummary(item.Description, "html")
 
 	doc, err := api.FetchHTML(entryUrl)
 	if err != nil {
@@ -61,9 +60,15 @@ func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerling
 		last.Remove()
 	}
 	// remove tags
-	contentEl.Children().Last().Remove()
+	last = contentEl.Children().Last()
+	if last.HasClass("field--name-field-tags") {
+		last.Remove()
+	}
 	// remove further reading
-	contentEl.Children().Last().Remove()
+	last = contentEl.Children().Last()
+	if last.Find("h2").Text() == "Further reading" {
+		last.Remove()
+	}
 
 	contentHtml, err := contentEl.Html()
 	if err != nil {
@@ -80,8 +85,9 @@ func addJeffGeerlingEntry(feed *atom.AtomFeed, feedUrl string, item jeffGeerling
 
 	if len(content) > 0 {
 		entry.SetContent(content, "html")
-		// ignore summary if content exists to reduce throughput
-		entry.SetSummary("", "html")
+	} else {
+		// should ideally never occur
+		entry.SetSummary(item.Description, "html")
 	}
 	feed.AddEntry(entry)
 }
