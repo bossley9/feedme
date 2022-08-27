@@ -12,6 +12,7 @@ const (
 	jeffgeerlingType = "@jeffgeerling"
 	odyseeType       = "odysee"
 	soundcloudType   = "soundcloud"
+	tkDodoType       = "@tkdodo"
 )
 
 func getLineType(feedType string) string {
@@ -27,7 +28,8 @@ available types are:
 		getLineType(geminiType) +
 		getLineType(jeffgeerlingType) +
 		getLineType(odyseeType) +
-		getLineType(soundcloudType)
+		getLineType(soundcloudType) +
+		getLineType(tkDodoType)
 }
 
 func handleFeed(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +46,8 @@ func handleFeed(w http.ResponseWriter, r *http.Request) {
 		HandleOdysee(w, r)
 	case soundcloudType:
 		HandleSoundcloud(w, r)
+	case tkDodoType:
+		HandleTkdodo(w, r)
 	default:
 		HandleNotFound(w, r)
 	}
