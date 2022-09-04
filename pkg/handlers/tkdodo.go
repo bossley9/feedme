@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/xml"
-	"html"
 	"net/http"
 	"strings"
 	"sync"
@@ -67,8 +66,7 @@ func addTkdodoEntry(feed *atom.AtomFeed, feedUrl string, item tkdodoResponseItem
 	// convert relative links to absolute
 	contentHtml = strings.ReplaceAll(contentHtml, `href="/`, `href="`+feedUrl+"/")
 
-	trimmedContentHtml := strings.TrimSpace(contentHtml)
-	content := html.EscapeString(trimmedContentHtml)
+	content := strings.TrimSpace(contentHtml)
 
 	if len(content) > 0 {
 		entry.SetContent(content, "html")
