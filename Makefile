@@ -4,7 +4,7 @@ BIN = $(PREFIX)/bin
 EXE = feedme
 
 build: test
-	go build -o ./$(EXE) ./cmd/feedme
+	go build -o ./$(EXE) ./cmd/feedme.go
 
 test:
 	go test ./pkg/atom
@@ -13,7 +13,7 @@ clean:
 	rm -f ./$(EXE)
 
 server:
-	go run cmd/feedme/main.go
+	go run ./cmd/feedme.go
 
 install: build
 	cp ./$(EXE) $(BIN)/$(EXE)
