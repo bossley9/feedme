@@ -16,31 +16,15 @@ Atom is defined according to [RFC 4287](https://datatracker.ietf.org/doc/html/rf
 
 ## Requirements
 
-A working Golang 1.18+ installation is required.
+A working Golang 1.17+ installation is required.
 
 ## Installation
 
-Create a `.env` file. If you supply no variables, defaults will be filled in for you.
-
-```
-DOMAIN_NAME=example.com
-DOMAIN_PORT=8080
-CERT_FILE=/mycert.fullchain.pem
-KEY_FILE=/mykey.key
-```
-
-Then build and install the application.
+Build and install the application.
 
 ```
 make
 $ make install
-```
-
-If you're running OpenBSD, running the service is simple.
-
-```
-$ rcctl enable feedme
-$ rcctl start feedme
 ```
 
 ## Usage
