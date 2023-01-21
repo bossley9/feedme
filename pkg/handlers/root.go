@@ -7,12 +7,9 @@ import (
 
 // unique feeds prefixed by "@"
 const (
-	acastType        = "acast"
-	geminiType       = "gemini"
-	jeffgeerlingType = "@jeffgeerling"
-	odyseeType       = "odysee"
-	soundcloudType   = "soundcloud"
-	tkDodoType       = "@tkdodo"
+	acastType      = "acast"
+	geminiType     = "gemini"
+	soundcloudType = "soundcloud"
 )
 
 func getLineType(feedType string) string {
@@ -26,10 +23,7 @@ available types are:
 ` +
 		getLineType(acastType) +
 		getLineType(geminiType) +
-		getLineType(jeffgeerlingType) +
-		getLineType(odyseeType) +
-		getLineType(soundcloudType) +
-		getLineType(tkDodoType)
+		getLineType(soundcloudType)
 }
 
 func handleFeed(w http.ResponseWriter, r *http.Request) {
@@ -40,14 +34,8 @@ func handleFeed(w http.ResponseWriter, r *http.Request) {
 		HandleAcast(w, r)
 	case geminiType:
 		HandleGemini(w, r)
-	case jeffgeerlingType:
-		HandleJeffGeerling(w, r)
-	case odyseeType:
-		HandleOdysee(w, r)
 	case soundcloudType:
 		HandleSoundcloud(w, r)
-	case tkDodoType:
-		HandleTkdodo(w, r)
 	default:
 		HandleNotFound(w, r)
 	}
