@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	h "git.sr.ht/~bossley9/feedme/pkg/handlers"
+	h "github.com/bossley9/feedme/pkg/handlers"
 )
 
 func New(domain string, port string, certFile string, keyFile string) error {

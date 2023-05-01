@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"git.sr.ht/~bossley9/feedme/pkg/atom"
+	"github.com/bossley9/feedme/pkg/atom"
 
 	"github.com/gorilla/mux"
 )

@@ -1,5 +1,5 @@
 package atom
 
 const NAME = "Feedme"
-const VERSION = "v0.0.4"
-const PKG = "git.sr.ht/~bossley9/feedme"
+const VERSION = "v0.1.4"
+const PKG = "github.com/bossley9/feedme"

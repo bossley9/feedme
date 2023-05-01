@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"git.sr.ht/~bossley9/feedme/pkg/server"
+	"github.com/bossley9/feedme/pkg/server"
 )
 
 func main() {

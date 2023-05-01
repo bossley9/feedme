@@ -1,4 +1,4 @@
-module git.sr.ht/~bossley9/feedme
+module github.com/bossley9/feedme
 
 go 1.17
 

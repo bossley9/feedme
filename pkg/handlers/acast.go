@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"git.sr.ht/~bossley9/feedme/pkg/api"
-	"git.sr.ht/~bossley9/feedme/pkg/atom"
+	"github.com/bossley9/feedme/pkg/api"
+	"github.com/bossley9/feedme/pkg/atom"
 )
 
 type acastResponse struct {
