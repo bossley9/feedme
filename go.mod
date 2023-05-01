@@ -6,8 +6,8 @@ require github.com/gorilla/mux v1.8.0
 
 require (
 	git.sr.ht/~adnano/go-gemini v0.2.3
-	git.sr.ht/~bossley9/gem v1.1.0
 	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/bossley9/gem v1.4.2
 )
 
 require (

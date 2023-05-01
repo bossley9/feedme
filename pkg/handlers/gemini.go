@@ -11,7 +11,7 @@ import (
 	"git.sr.ht/~bossley9/feedme/pkg/api"
 	"git.sr.ht/~bossley9/feedme/pkg/atom"
 
-	"git.sr.ht/~bossley9/gem"
+	"github.com/bossley9/gem"
 )
 
 const geminiProtocol = "gemini://"
